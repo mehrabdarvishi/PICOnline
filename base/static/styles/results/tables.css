@@ -1,0 +1,64 @@
+.dataframe-container {
+  max-width: 90%;
+  overflow-x: scroll;
+}
+
+.dataframe {
+  font-size: 1.2rem;
+  cursor: default;
+  border: none;
+  table-layout:fixed;
+}
+
+.dataframe tr, td, th {
+  border: none;
+}
+
+.dataframe th {
+  padding: 1em;
+  font-weight: 700;
+}
+
+.dataframe td {
+  text-align: center;
+  padding: 1em;
+}
+
+.dataframe td::-webkit-scrollbar {
+    width: 12px;
+}
+
+
+.dataframe td::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+.dataframe td::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+
+.dataframe thead tr {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+
+  & th:nth-child(1) {
+    background-color: var(--body-color);
+  }
+}
+
+.dataframe tbody tr {
+  background-color: #f1f1f1;
+}
+
+.dataframe tbody tr th{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dataframe tbody tr:hover {
+  & td {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

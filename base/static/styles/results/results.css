@@ -1,0 +1,30 @@
+
+.results-container {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+}
+
+.results-container .results-bar ul {
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 2px;
+
+}
+
+.results-container .results-bar ul li {
+	font-size: 1.3rem;
+	padding-block: 2rem;
+	text-align: center;
+	cursor: pointer;
+	background-color: #bdd0db;
+}
+
+.results-container .results-bar ul li:hover {
+	color: #f1f1f1;
+	background-color: #365263;
+}
+
+.result {
+}
