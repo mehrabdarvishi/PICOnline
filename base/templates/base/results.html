@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="{% static '/styles/results/results.css' %}">
 {% endblock link %}
 {% block script %}
+	<script src="{% static '/scripts/results.js' %}"></script>
 	<script src="{% static '/scripts/results_bar.js' %}"></script>
 	<script src="{% static '/scripts/tables.js' %}"></script>
 {% endblock script %}
@@ -13,19 +14,23 @@
 <div class="results-container">
 	<nav class="results-bar">
 		<ul>
-			<li data-result-name="tables">Tables</li>
+			<li data-result-name="tables" class="selected">Tables</li>
 			<li data-result-name="frequencies">Frequencies</li>
 			<li data-result-name="correlation-plots">Correlation Plots</li>
-			<li data-result-name="3d-plot">3D Plot</li>
+			<li data-result-name="three-d-plot">3D Plot</li>
 			<li data-result-name="pca">PCA</li>
 		</ul>
 	</nav>
 	<div class="result">
 		<div class="tables">
+			<div class="select-table">
+				<span data-title="ranks" class="selected">Ranks</span>
+				<span data-title="indices">Indices</span>
+			</div>
 			<div class="dataframe-container" data-table-type="ranks">
 				{{ ranks_df|safe }}
 			</div>
-			<div class="dataframe-container" data-table-type="indices">
+			<div class="dataframe-container" data-table-type="indices" style="display: none;">
 				{{ indices_df|safe }}
 			</div>
 		</div>
@@ -35,8 +40,8 @@
 		<div class="correlation-plots">
 			
 		</div>
-		<div class="3d-plot">
-			
+		<div class="three-d-plot" style="display: none;">
+			{{ 3dplot|safe }}
 		</div>
 		<div class="pca">
 			
@@ -44,6 +49,6 @@
 	</div>
 </div>
 
-	{{ 3dplot|safe }}
+	
 
 {% endblock content %}

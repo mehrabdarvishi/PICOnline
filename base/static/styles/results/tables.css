@@ -1,46 +1,72 @@
-.dataframe-container {
-  max-width: 90%;
+.results-container .result .tables .dataframe-container {
   overflow-x: scroll;
+  margin: 0 auto;
+  max-width: 90%;
 }
 
-.dataframe {
+
+.results-container .result .tables .select-table {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 4rem;
+
+  & span {
+    font-size: 1.2rem;
+    background-color: #f1f1f1;
+    padding-inline: 2rem;
+    padding-block: .5rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  & span:hover, .selected {
+    background-color: #365263;
+    color: #f1f1f1;
+  }
+
+}
+
+
+.results-container .result .tables .dataframe-container .dataframe {
   font-size: 1.2rem;
   cursor: default;
   border: none;
   table-layout:fixed;
+  margin: 0 auto;
 }
 
-.dataframe tr, td, th {
+.results-container .result .tables .dataframe-container .dataframe tr, td, th {
   border: none;
 }
 
-.dataframe th {
+.results-container .result .tables .dataframe-container .dataframe th {
   padding: 1em;
   font-weight: 700;
 }
 
-.dataframe td {
+.results-container .result .tables .dataframe-container .dataframe td {
   text-align: center;
   padding: 1em;
 }
 
-.dataframe td::-webkit-scrollbar {
+.results-container .result .tables .dataframe-container .dataframe td::-webkit-scrollbar {
     width: 12px;
 }
 
 
-.dataframe td::-webkit-scrollbar-track {
+.results-container .result .tables .dataframe-container .dataframe td::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
     border-radius: 10px;
 }
 
-.dataframe td::-webkit-scrollbar-thumb {
+.results-container .result .tables .dataframe-container .dataframe td::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
 
-.dataframe thead tr {
+.results-container .result .tables .dataframe-container .dataframe thead tr {
   background-color: rgba(0, 0, 0, 0.6);
   color: rgba(255, 255, 255, 0.9);
 
@@ -49,15 +75,15 @@
   }
 }
 
-.dataframe tbody tr {
+.results-container .result .tables .dataframe-container .dataframe tbody tr {
   background-color: #f1f1f1;
 }
 
-.dataframe tbody tr th{
+.results-container .result .tables .dataframe-container .dataframe tbody tr th{
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.dataframe tbody tr:hover {
+.results-container .result .tables .dataframe-container .dataframe tbody tr:hover {
   & td {
     background-color: rgba(0, 0, 0, 0.2);
   }

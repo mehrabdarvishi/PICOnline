@@ -3,6 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
+	max-width: 100%;
 }
 
 .results-container .results-bar ul {
@@ -21,10 +22,8 @@
 	background-color: #bdd0db;
 }
 
-.results-container .results-bar ul li:hover {
+.results-container .results-bar ul li:hover, .results-container .results-bar ul .selected {
 	color: #f1f1f1;
 	background-color: #365263;
 }
 
-.result {
-}
