@@ -34,13 +34,19 @@ class IndexView(View):
 		YI = Ys / Ys_mean
 		YSI = Ys / Yp
 		RSI = (Ys / Yp) / (Ys_mean / Yp_mean)
+		feature_names = ['Yp', 'Ys', 'TOLL', 'MP', 'GMP', 'HM', 'SSI', 'STI', 'YI', 'YSI', 'RSI']
 		indices_df = get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
 		ranks_df = get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
-		generate_correlations_heatmaps_images(indices_df)
+		correlations_heatmaps = generate_correlations_heatmaps_images(indices_df)
+		frequencies = [generate_relative_frequency_bar_graph_image(indices_df, feature_name) for feature_name in feature_names]
+		frequencies = zip(feature_names, frequencies)
 		context = {
 			'indices_df': indices_df.to_html(),
 			'ranks_df': ranks_df.to_html(),
-			'3dplot': px.scatter_3d(indices_df, x='Yp', y='Ys', z='TOLL', color=indices_df.columns[0]).to_html()
+			'3dplot': px.scatter_3d(indices_df, x='Yp', y='Ys', z='TOLL', color=indices_df.columns[0]).to_html(),
+			'correlations_heatmaps': correlations_heatmaps,
+			'frequencies': frequencies,
+
 		}
 		return render(self.request, 'base/results.html', context=context)
 		return redirect('base:index')

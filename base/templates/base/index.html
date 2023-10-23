@@ -1,9 +1,44 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
-{% block content %}
-	<header>
-		<h1>Site Title Here</h1>
-	</header>
+{% block link %}
+	<link rel="stylesheet" href="{% static '/styles/index.css' %}">
+{% endblock link %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block content %}	
+
+<div class="container">
+	<div class="calculates">
+		<p>PICOnline calculates the following indices:</p>
+		<ul>
+			<li>Tolerance index (TOL)</li>
+			<li>Relative stress index (RSI)</li>
+			<li>Mean productivity (MP)</li>
+			<li>Harmonic mean (HM)</li>
+			<li>Yield stability index (YSI)</li>
+			<li>Geometric mean productivity (GMP)</li>
+			<li>Stress susceptibility index (SSI)</li>
+			<li>Stress tolerance index (STI)</li>
+			<li>Yield index (YI)</li>
+		</ul>
+	</div>
+
+	<div class="perfect-tool-for">
+		<p>PICOnline is the perfect tool for:</p>
+		<ul>
+			<li>Identifying stress-tolerant genotypes for breeding programs</li>
+			<li>Optimizing crop management practices to minimize stress impact</li>
+			<li>Advancing research in agronomy and plant breeding</li>
+		</ul>
+	</div>
+</div>
+
+
+
 	<form enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		{{ form }}

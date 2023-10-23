@@ -6,9 +6,12 @@
 	<link rel="stylesheet" href="{% static '/styles/results/results.css' %}">
 {% endblock link %}
 {% block script %}
+
 	<script src="{% static '/scripts/results.js' %}"></script>
 	<script src="{% static '/scripts/results_bar.js' %}"></script>
 	<script src="{% static '/scripts/tables.js' %}"></script>
+	<script src="{% static '/scripts/frequencies.js' %}"></script>
+
 {% endblock script %}
 {% block content %}
 <div class="results-container">
@@ -35,10 +38,33 @@
 			</div>
 		</div>
 		<div class="frequencies">
+			<div class="select-feature">
+				<select name="cars" id="cars">
+					<option value="Yp">Yp</option>
+					<option value="Ys">Ys</option>
+					<option value="TOLL">TOLL</option>
+					<option value="MP">MP</option>
+					<option value="GMP">GMP</option>
+					<option value="HM">HM</option>
+					<option value="SSI">SSI</option>
+					<option value="STI">STI</option>
+					<option value="YI">YI</option>
+					<option value="YSI">YSI</option>
+					<option value="RSI">RSI</option>
+  				</select>
+
+			</div>
+    		{% for feature_name, graph in frequencies %}
+    			{% if forloop.first %}
+    				<img src="data:image/png;base64, {{ graph|safe }}" alt="{{ feature_name }}">
+    			{% else %}
+    				<img src="data:image/png;base64, {{ graph|safe }}" alt="{{ feature_name }}" style="display: none;">
+    			{% endif %}
+    		{% endfor %}
 
 		</div>
 		<div class="correlation-plots">
-			
+			<img src="data:image/png;base64, {{ correlations_heatmaps|safe }}" alt="">
 		</div>
 		<div class="three-d-plot" style="display: none;">
 			{{ 3dplot|safe }}

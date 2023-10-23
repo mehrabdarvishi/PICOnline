@@ -30,6 +30,7 @@
 
 .results-container .result .tables .dataframe-container .dataframe {
   font-size: 1.2rem;
+  cursor: move; /* fallback if grab cursor is unsupported */
   cursor: default;
   border: none;
   table-layout:fixed;

@@ -5,6 +5,8 @@ import seaborn as sns
 import plotly
 import plotly.express as px
 import math
+import base64
+from io import BytesIO
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from bioinfokit.visuz import cluster
@@ -91,11 +93,18 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
     plt.ylabel('Relative Frequency')
     bins = compute_histogram_bins(data=df[feature_name], desired_bin_size=bin_size)
     ax.hist(df[feature_name], edgecolor='black', weights=np.ones_like(df[feature_name]) / number_of_rows, bins=7)
-    plt.savefig('relative_frequency.png')
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    return graph
 
 
 def generate_correlations_heatmaps_images(df):
-    fig, axs = plt.subplots(2, 1, figsize=(30, 30))
+    fig, axs = plt.subplots(2, 1, figsize=(15, 15))
     df = df.drop([df.columns[0], 'RC'], axis=1)
     Pearsons_heatmap = df.corr(method='pearson')
     spearmans_heatmap = df.corr(method='spearman')
@@ -103,7 +112,14 @@ def generate_correlations_heatmaps_images(df):
     axs[0].set_title("Pearson's Correlation Heatmap")
     plot = sns.heatmap(spearmans_heatmap, annot=True, square=True, ax=axs[1])
     axs[1].set_title("Spearman's Correlation Heatmap")
-    plot.get_figure().savefig('correlations_heatmaps.png', bbox_inches='tight')
+    buffer = BytesIO()
+    plot.get_figure().savefig(buffer, bbox_inches='tight', format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    return graph
 
 
 def generate_pca_plot_image(df):
