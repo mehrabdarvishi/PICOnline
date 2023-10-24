@@ -40,22 +40,3 @@ video {
   display: block;
   max-width: 100%;
 }
-
-
-header {
-  background-color: #f1f1f1;
-  padding: 1rem;
-}
-
-header h1 {
-  font-size: 3rem;
-  text-align: center;
-  cursor: default;
-  font-weight: 700;
-}
-
-header h3 {
-  font-size: 1.3rem;
-  text-align: center;
-  cursor: default;
-}

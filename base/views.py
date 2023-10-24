@@ -18,8 +18,6 @@ class IndexView(View):
 	def post(self, *args, **kwargs):
 		uploaded_file = self.request.FILES['file']
 
-
-
 		df = pd.read_excel(uploaded_file)
 		genotype_code = df[df.columns[0]]
 		Yp, Ys = df.Yp, df.Ys

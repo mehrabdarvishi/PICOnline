@@ -129,8 +129,9 @@ def generate_pca_plot_image(df):
     loadings = pca_out.components_
     pca_out.explained_variance_
     pca_scores = PCA().fit_transform(X_st)
-    cluster.biplot(cscore=pca_scores, loadings=loadings, labels=X.columns.values, var1=round(pca_out.explained_variance_ratio_[0]*100, 2),
+    c = cluster.biplot(cscore=pca_scores, loadings=loadings, labels=X.columns.values, var1=round(pca_out.explained_variance_ratio_[0]*100, 2),
         var2=round(pca_out.explained_variance_ratio_[1]*100, 2))
+    print(help(cluster))
    
 if __name__ == '__main__':
     df = pd.read_excel('Example#1.xlsx')
@@ -154,7 +155,8 @@ if __name__ == '__main__':
     generate_relative_frequency_bar_graph_image(indices_df, 'TOLL')
     generate_correlations_heatmaps_images(indices_df)
     generate_3d_plot_html_file(indices_df, x='Yp', y='Ys', z='TOLL')
-    generate_pca_plot_image(indices_df)
+    
+    print(generate_pca_plot_image(indices_df))
 
 
 
