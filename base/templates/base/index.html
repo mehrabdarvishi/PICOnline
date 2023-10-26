@@ -1,84 +1,91 @@
 {% extends 'base/base.html' %}
 
 {% load static %}
+{% load svg %}
 
 {% block link %}
 	<link rel="stylesheet" href="{% static '/styles/index.css' %}">
 {% endblock link %}
 
 {% block script %}
+	<script src="{% static '/scripts/file_input.js' %}"></script>
 {% endblock script %}
 
 
 {% block content %}
-	<div class="container">
-		<header>
-			<h1>Plant Index Calculator (PICOnline)</h1>
-		    <h3>A Powerful Tool for Stress Tolerance and Susceptibility Evaluation</h3>
-		</header>
-
-	    <p style="color: rgba(255, 0, 0, 0.8);">Attention agronomy and plant breeding professors and students!</p>
-	    <p>
-	        Empower your research and streamline your data analysis with PICOnline, the user-friendly, online platform for calculating stress tolerance and susceptibility indices in crops.
-	        PICOnline is a user-friendly online software that calculates common stress tolerance and susceptibility indices for various crop traits. It is an essential tool for agronomists and breeders who are dealing with large volumes of data and need to quickly and easily evaluate the stress tolerance of plant genotypes.</p>
-
-	    <p>PICOnline is a web-based program that provides access to a variety of well-established yield-based indices for evaluating stress tolerance in crops. It is the perfect tool for agronomists and breeders who need to screen large volumes of data for the most tolerant genotypes.</p>
-
-	    <p>PICOnline calculates the following indices:</p>
-	    <ul>
-	        <li>Tolerance index (<strong>TOL</strong>)</li>
-	        <li>Relative stress index (<strong>RSI</strong>)</li>
-	        <li>Mean productivity (<strong>MP</strong>)</li>
-	        <li>Harmonic mean (<strong>HM</strong>)</li>
-	        <li>Yield stability index (<strong>YSI</strong>)</li>
-	        <li>Geometric mean productivity (<strong>GMP</strong>)</li>
-	        <li>Stress susceptibility index (<strong>SSI</strong>)</li>
-	        <li>Stress tolerance index (<strong>STI</strong>)</li>
-	        <li>Yield index (<strong>YI</strong>)</li>
-	    </ul>
-
-	    <p>In addition to calculating these indices, PICOnline can also:</p>
-	    <ul>
-	        <li>Calculate their ranking patterns</li>
-	        <li>Estimate the relative frequency for each index</li>
-	        <li>Create heat maps based on Pearson’s and Spearman’s rank‐order correlation analyses</li>
-	        <li>Render three‐dimensional plots based on both yield performances and each index to separate entry genotypes into Fernandez’s groups (A, B, C, and D)</li>
-	        <li>Perform principal component analysis</li>
-	    </ul>
-	    <p>PICOnline is accurate and easy to use. It is accessible from any device with a web browser, and there is no need to download or install any software.</p>
-
-	    <p>Unleash the power of PICOnline's advanced features:</p>
-	    <ul>
-	        <li>Effortlessly calculate and rank stress tolerance indices</li>
-	        <li>Visualize data patterns with heat maps and 3D plots</li>
-	        <li>Perform principal component analysis for deeper insights</li>
-	    </ul>
-
-	    <p>Here are just a few of the benefits of using PICOnline:</p>
-	    <ul>
-	        <li><strong>Save time and effort</strong>: PICOnline automates the calculation of stress tolerance and susceptibility indices, saving you time and effort.</li>
-	        <li><strong>Improve your accuracy</strong>: PICOnline uses advanced algorithms to ensure that your results are accurate and reliable.</li>
-	        <li><strong>Gain new insights</strong>: PICOnline's visualization tools can help you to identify patterns and trends in your data that would be difficult to see otherwise.</li>
-	        <li><strong>Make better decisions</strong>: PICOnline can help you to select the most tolerant genotypes for your breeding program or to identify areas where management practices can be improved to reduce the impact of stress.</li>
-	        <li><strong>Improve your teaching and learning</strong>: PICOnline can be used to create interactive lessons and exercises for students, helping them to learn about the different methods for evaluating stress tolerance in crops.</li>
-	    </ul>
-
-	    <p>Try PICOnline today and see how it can help you improve your crop yields and resilience to abiotic stresses.</p>
-	    <div class="form-container">
-			<form enctype="multipart/form-data" method="post">
-				{% csrf_token %}
+<div class="container">
+    <div class="form-container">
+		<form enctype="multipart/form-data" method="post">
+			{% csrf_token %}
+			<div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+				<label for="id_file">{% svg 'xlsx-file-icon' %}<span>Select Your Dataset Here</span></label>
 				{{ form.file }}
-				<button type="submit" id="calculate-btn" class="btn">Get Results</button>
-			</form>
-	    </div>
-	    <p>PICOnline: The essential tool for stress tolerance and susceptibility evaluation.</p>
+				<button type="submit" id="calculate-btn" class="btn" style="display: none;">Calculate</button>
+			</div>
+		</form>
+    </div>
+    <p style="color: rgba(255, 0, 0, 0.8); justify-content: center; margin-bottom: 2rem; display: flex; gap: .6rem">
+		{%svg 'caution-icon' %}
+		<span>
+	    	Attention agronomy and plant breeding professors and students!
+		</span>
+	</p>
+    <p>
+        Empower your research and streamline your data analysis with PICOnline, the user-friendly, online platform for calculating stress tolerance and susceptibility indices in crops.
+    </p>
+    <p>
+    	PICOnline is a user-friendly online software that calculates common stress tolerance and susceptibility indices for various crop traits. It is an essential tool for agronomists and breeders who are dealing with large volumes of data and need to quickly and easily evaluate the stress tolerance of plant genotypes.
+    </p>
+    <p>PICOnline is a web-based program that provides access to a variety of well-established yield-based indices for evaluating stress tolerance in crops. It is the perfect tool for agronomists and breeders who need to screen large volumes of data for the most tolerant genotypes.</p>
 
-	    <p>PICOnline is the perfect tool for:</p>
-	    <ul>
-	        <li>Identifying stress-tolerant genotypes for breeding programs</li>
-	        <li>Optimizing crop management practices to minimize stress impact</li>
-	        <li>Advancing research in agronomy and plant breeding</li>
-	    </ul>
-	</div>
+    <p>PICOnline calculates the following indices:</p>
+    <ul>
+        <li>Tolerance index (<strong>TOL</strong>)</li>
+        <li>Relative stress index (<strong>RSI</strong>)</li>
+        <li>Mean productivity (<strong>MP</strong>)</li>
+        <li>Harmonic mean (<strong>HM</strong>)</li>
+        <li>Yield stability index (<strong>YSI</strong>)</li>
+        <li>Geometric mean productivity (<strong>GMP</strong>)</li>
+        <li>Stress susceptibility index (<strong>SSI</strong>)</li>
+        <li>Stress tolerance index (<strong>STI</strong>)</li>
+        <li>Yield index (<strong>YI</strong>)</li>
+    </ul>
+
+    <p>In addition to calculating these indices, PICOnline can also:</p>
+    <ul>
+        <li>Calculate their ranking patterns</li>
+        <li>Estimate the relative frequency for each index</li>
+        <li>Create heat maps based on Pearson’s and Spearman’s rank‐order correlation analyses</li>
+        <li>Render three‐dimensional plots based on both yield performances and each index to separate entry genotypes into Fernandez’s groups (A, B, C, and D)</li>
+        <li>Perform principal component analysis</li>
+    </ul>
+    <p>PICOnline is accurate and easy to use. It is accessible from any device with a web browser, and there is no need to download or install any software.</p>
+
+    <p>Unleash the power of PICOnline's advanced features:</p>
+    <ul>
+        <li>Effortlessly calculate and rank stress tolerance indices</li>
+        <li>Visualize data patterns with heat maps and 3D plots</li>
+        <li>Perform principal component analysis for deeper insights</li>
+    </ul>
+
+    <p>Here are just a few of the benefits of using PICOnline:</p>
+    <ul>
+        <li><strong>Save time and effort</strong>: PICOnline automates the calculation of stress tolerance and susceptibility indices, saving you time and effort.</li>
+        <li><strong>Improve your accuracy</strong>: PICOnline uses advanced algorithms to ensure that your results are accurate and reliable.</li>
+        <li><strong>Gain new insights</strong>: PICOnline's visualization tools can help you to identify patterns and trends in your data that would be difficult to see otherwise.</li>
+        <li><strong>Make better decisions</strong>: PICOnline can help you to select the most tolerant genotypes for your breeding program or to identify areas where management practices can be improved to reduce the impact of stress.</li>
+        <li><strong>Improve your teaching and learning</strong>: PICOnline can be used to create interactive lessons and exercises for students, helping them to learn about the different methods for evaluating stress tolerance in crops.</li>
+    </ul>
+
+    <p>Try PICOnline today and see how it can help you improve your crop yields and resilience to abiotic stresses.</p>
+    <p>PICOnline: The essential tool for stress tolerance and susceptibility evaluation.</p>
+
+    <p>PICOnline is the perfect tool for:</p>
+    <ul>
+        <li>Identifying stress-tolerant genotypes for breeding programs</li>
+        <li>Optimizing crop management practices to minimize stress impact</li>
+        <li>Advancing research in agronomy and plant breeding</li>
+    </ul>
+</div>
 
 {% endblock content %}

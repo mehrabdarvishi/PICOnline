@@ -1,4 +1,6 @@
 {% load static %}
+{% load svg %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,10 +8,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{% static '/styles/base_styles.css' %}">
+	<link rel="stylesheet" href="{% static '/styles/header.css' %}">
 	{% block link %}{% endblock link %}
 	<title>PICOnline - Plant Index Calculator</title>
 </head>
 <body>
+	<header>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<div style="display: flex;">
+			<h1>Plant Index Calculator (PICOnline)</h1>
+			{% svg 'green-leaf-icon' %}
+
+		</div>
+	    <h3>A Powerful Tool for Stress Tolerance and Susceptibility Evaluation</h3>
+		</div>
+	</header>
 	{% block content %}
 	{% endblock content %}
 	{% block script %}
