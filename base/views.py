@@ -36,6 +36,7 @@ class IndexView(View):
 		indices_df = get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
 		ranks_df = get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
 		correlations_heatmaps = generate_correlations_heatmaps_images(indices_df)
+		pca = generate_pca_plot_image(indices_df)
 		frequencies = [generate_relative_frequency_bar_graph_image(indices_df, feature_name) for feature_name in feature_names]
 		frequencies = zip(feature_names, frequencies)
 		context = {
@@ -44,6 +45,7 @@ class IndexView(View):
 			'3dplot': px.scatter_3d(indices_df, x='Yp', y='Ys', z='TOLL', color=indices_df.columns[0]).to_html(),
 			'correlations_heatmaps': correlations_heatmaps,
 			'frequencies': frequencies,
+			'pca': pca,
 
 		}
 		return render(self.request, 'base/results.html', context=context)

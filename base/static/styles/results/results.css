@@ -28,7 +28,7 @@
 }
 
 
-.results-container .result .correlation-plots img, .results-container .result .frequencies img{
+.results-container .result .correlation-plots img, .results-container .result .frequencies img, .results-container .result .pca img{
 	margin-inline: auto;
 	margin-block: 2rem;
 	border-radius: 5px;

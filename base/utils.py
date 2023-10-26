@@ -122,6 +122,7 @@ def generate_correlations_heatmaps_images(df):
     return graph
 
 
+'''
 def generate_pca_plot_image(df):
     X = df.select_dtypes(include=np.number)
     X_st =  StandardScaler().fit_transform(X)
@@ -132,7 +133,49 @@ def generate_pca_plot_image(df):
     c = cluster.biplot(cscore=pca_scores, loadings=loadings, labels=X.columns.values, var1=round(pca_out.explained_variance_ratio_[0]*100, 2),
         var2=round(pca_out.explained_variance_ratio_[1]*100, 2))
     print(help(cluster))
-   
+'''
+
+
+def generate_pca_plot_image(df):
+    X = df.select_dtypes(include=np.number)
+    labels = X.columns.values
+    scaler = StandardScaler()
+    scaler.fit(X)
+    X=scaler.transform(X)    
+    pca = PCA()
+    x_new = pca.fit_transform(X)
+    # Use only the 2 PCs.
+    score = x_new[:,0:2]
+    coeff = np.transpose(pca.components_[0:2, :])
+    xs = score[:,0]
+    ys = score[:,1]
+    n = coeff.shape[0]
+    scalex = 1.0/(xs.max() - xs.min())
+    scaley = 1.0/(ys.max() - ys.min())
+    fig = plt.figure()
+    plt.scatter(xs * scalex,ys * scaley)
+    for i in range(n):
+        plt.arrow(0, 0, coeff[i,0], coeff[i,1],color = 'r',alpha = 0.5)
+        if labels is None:
+            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, "Var"+str(i+1), color = 'g', ha = 'center', va = 'center')
+        else:
+            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
+    plt.xlim(-1,1)
+    plt.ylim(-1,1)
+    plt.xlabel("PC{}".format(1))
+    plt.ylabel("PC{}".format(2))
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    return graph
+
+
+
+
 if __name__ == '__main__':
     df = pd.read_excel('Example#1.xlsx')
     genotype_code = df[df.columns[0]]
@@ -150,13 +193,6 @@ if __name__ == '__main__':
     RSI = (Ys / Yp) / (Ys_mean / Yp_mean)
     indices_df = get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
     ranks_df = get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
-    print(indices_df.to_string())
-    print(ranks_df.to_string())
-    generate_relative_frequency_bar_graph_image(indices_df, 'TOLL')
-    generate_correlations_heatmaps_images(indices_df)
-    generate_3d_plot_html_file(indices_df, x='Yp', y='Ys', z='TOLL')
-    
-    print(generate_pca_plot_image(indices_df))
 
 
 
