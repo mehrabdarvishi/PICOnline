@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .forms import FileUploadForm
 import pandas as pd
-from .prev import *
+from .utils import *
 
 
 def index(request):
