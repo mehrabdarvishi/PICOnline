@@ -1,4 +1,4 @@
-document.querySelectorAll(".select-table span").forEach(element => {
+document.querySelectorAll(".results-container .result .tables .select-table span").forEach(element => {
     element.addEventListener("click", (event)=>{
         
         selected_table_data_attr = event.target.getAttribute("data-title");
@@ -6,6 +6,6 @@ document.querySelectorAll(".select-table span").forEach(element => {
         other_table.style.display = "none";
         document.querySelector(`[data-table-type=${selected_table_data_attr}]`).style.display = "block";
         element.classList.add("selected");
-        document.querySelector(`.select-table span:not([data-title=${selected_table_data_attr}])`).classList.remove("selected");
+        document.querySelector(`.results-container .result .tables .select-table span:not([data-title=${selected_table_data_attr}])`).classList.remove("selected");
     });
 });

@@ -11,6 +11,7 @@
 	<script src="{% static '/scripts/results_bar.js' %}"></script>
 	<script src="{% static '/scripts/tables.js' %}"></script>
 	<script src="{% static '/scripts/frequencies.js' %}"></script>
+	<script src="{% static '/scripts/three_d_plot_switch_to_black_and_white_mode.js' %}"></script>
 
 {% endblock script %}
 {% block content %}
@@ -18,6 +19,8 @@
 	<nav class="results-bar">
 		<ul>
 			<li data-result-name="tables" class="selected">Tables</li>
+			<li data-result-name="describe">Describe</li>
+			<li data-result-name="bar-charts">Bar Charts</li>
 			<li data-result-name="frequencies">Frequencies</li>
 			<li data-result-name="correlation-plots">Correlation Plots</li>
 			<li data-result-name="three-d-plot">3D Plot</li>
@@ -27,19 +30,29 @@
 	<div class="result">
 		<div class="tables">
 			<div class="select-table">
-				<span data-title="ranks" class="selected">Ranks</span>
-				<span data-title="indices">Indices</span>
+				<span data-title="indices" class="selected">Indices</span>
+				<span data-title="ranks">Ranks</span>
 			</div>
-			<div class="dataframe-container" data-table-type="ranks">
-				{{ ranks_df|safe }}
-			</div>
-			<div class="dataframe-container" data-table-type="indices" style="display: none;">
+			<div class="dataframe-container" data-table-type="indices" >
 				{{ indices_df|safe }}
 			</div>
+			<div class="dataframe-container" data-table-type="ranks" style="display: none;">
+				{{ ranks_df|safe }}
+			</div>
+		</div>
+		<div class="describe" style="display: none;">
+			<div class="dataframe-container" data-table-type="indices" >
+				{{ describe|safe }}
+			</div>
+		</div>
+		<div class="bar-charts" style="display: none; margin-inline: auto;">
+			{% for bar_chart in bar_charts %}
+				{{ bar_chart|safe }}
+			{% endfor %}
 		</div>
 		<div class="frequencies" style="display: none;">
 			<div class="select-feature">
-				<select name="cars" id="cars">
+				<select>
 					<option value="Yp">Yp</option>
 					<option value="Ys">Ys</option>
 					<option value="TOLL">TOLL</option>
@@ -51,8 +64,18 @@
 					<option value="YI">YI</option>
 					<option value="YSI">YSI</option>
 					<option value="RSI">RSI</option>
+					<option value="SI">SI</option>
+					<option value="ATI">ATI</option>
+					<option value="SSPI">SSPI</option>
+					<option value="REI">REI</option>
+					<option value="K1STI">K1STI</option>
+					<option value="K2STI">K2STI</option>
+					<option value="SDI">SDI</option>
+					<option value="DI">DI</option>
+					<option value="RDI">RDI</option>
+					<option value="SNPI">SNPI</option>
+					<option value="CSI">CSI</option>
   				</select>
-
 			</div>
     		{% for feature_name, graph in frequencies %}
     			{% if forloop.first %}
@@ -63,13 +86,24 @@
     		{% endfor %}
 
 		</div>
-		<div class="correlation-plots">
+		<div class="correlation-plots" style="display: none;">
 			<img src="data:image/png;base64, {{ correlations_heatmaps|safe }}" alt="">
 		</div>
 		<div class="three-d-plot" style="display: none;">
-			{{ 3dplot|safe }}
+			<div class="colored">
+				{{ 3dplot|safe }}	
+			</div>
+			<div class="black-and-white" style="display: none;">
+				{{ 3dplot_black_and_white|safe }}
+			</div>
+			<div class="switch_plot_btn">
+				<span>
+					black and white mode
+				</span>
+			</div>
+			
 		</div>
-		<div class="pca">
+		<div class="pca" style="display: none;">
 			<img src="data:image/png;base64, {{ pca|safe }}" alt="">
 		</div>
 	</div>

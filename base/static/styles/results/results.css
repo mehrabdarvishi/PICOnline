@@ -55,3 +55,20 @@
 .results-container .result .frequencies .select-feature select:focus {
 	outline: none;
 }
+
+.results-container .result .three-d-plot .switch_plot_btn {
+	width: fit-content;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: #f1f1f1;
+	padding-inline: 12px;
+	padding-block: 10px;
+	border-radius: 5px;
+	margin-top: 5rem;
+	margin-bottom: 2rem;
+	margin-inline: auto;
+	cursor: pointer;
+	&:hover {
+		background-color: #000;
+		color: #fff;
+	}
+}

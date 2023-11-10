@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from bioinfokit.visuz import cluster
 
 
-def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI):
+def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, RDI, SNPI):
     return pd.DataFrame({        
                     'Genotype Code': genotype_code,
                     'Yp':Yp,
@@ -26,10 +26,20 @@ def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, Y
                     'STI':STI,
                     'YI':YI,
                     'YSI':YSI,
-                    'RSI':RSI
+                    'RSI':RSI,
+                    'SI':SI,
+                    'ATI':ATI,
+                    'SSPI':SSPI,
+                    'REI':REI,
+                    'K1STI':K1STI,
+                    'K2STI':K2STI,
+                    'SDI':SDI,
+                    'DI':DI,
+                    'RDI':RDI,
+                    'SNPI':SNPI,
             })
 
-def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI):
+def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, RDI, SNPI, CSI):
     Yp_ranks = Yp.rank(ascending=False, method='min').astype(int)
     Ys_ranks = Ys.rank(ascending=False, method='min').astype(int)
     TOLL_ranks = TOLL.rank(ascending=True, method='min').astype(int)
@@ -41,8 +51,19 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
     YI_ranks = YI.rank(ascending=False, method='min').astype(int)
     YSI_ranks = YSI.rank(ascending=False, method='min').astype(int)
     RSI_ranks = RSI.rank(ascending=False, method='min').astype(int)
+    SI_ranks = SI.rank(ascending=False, method='min').astype(int)
+    ATI_ranks = ATI.rank(ascending=False, method='min').astype(int)
+    SSPI_ranks = SSPI.rank(ascending=False, method='min').astype(int)
+    REI_ranks = REI.rank(ascending=False, method='min').astype(int)
+    K1STI_ranks = K1STI.rank(ascending=False, method='min').astype(int)
+    K2STI_ranks = K2STI.rank(ascending=False, method='min').astype(int)
+    SDI_ranks = SDI.rank(ascending=False, method='min').astype(int)
+    DI_ranks = DI.rank(ascending=False, method='min').astype(int)
+    RDI_ranks = RDI.rank(ascending=False, method='min').astype(int)
+    SNPI_ranks = SNPI.rank(ascending=False, method='min').astype(int)
+    CSI_ranks = CSI.rank(ascending=False, method='min').astype(int)
 
-    return pd.DataFrame({
+    ranks_df = pd.DataFrame({
                             'Genotype Code': genotype_code,
                             'Yp':Yp_ranks,
                             'Ys':Ys_ranks,
@@ -55,10 +76,22 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
                             'YI':YI_ranks,
                             'YSI':YSI_ranks,
                             'RSI':RSI_ranks,
+                            'SI':SI_ranks,
+                            'ATI':ATI_ranks,
+                            'SSPI':SSPI_ranks,
+                            'REI':REI_ranks,
+                            'K1STI':K1STI_ranks,
+                            'K2STI':K2STI_ranks,
+                            'SDI':SDI_ranks,
+                            'DI':DI_ranks,
+                            'RDI':RDI_ranks,
+                            'SNPI':SNPI_ranks,
+                            'CSI':CSI_ranks,
                         })
+
     numeric_only_ranks_df = ranks_df.select_dtypes(include=np.number)
     SR = numeric_only_ranks_df.sum(axis=1)
-    AR = SR / len(numeric_only_ranks_df)
+    AR = SR / len(numeric_only_ranks_df.columns)
     SD = numeric_only_ranks_df.std(axis=1)
 
     ranks_df['SR'] = SR
@@ -68,10 +101,19 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
     return ranks_df
 
 
-def generate_3d_plot_html_file(df, z, x, y, path='fig.html'):
-    fig = px.scatter_3d(df, x=x, y=y, z=z, color=df.columns[0])
-    plotly.offline.plot(fig, filename=path, auto_open=False)
 
+def generate_3d_plot(df, x, y, z, black_and_white=False):
+    fig = px.scatter_3d(df, x=x, y=y, z=z, color=df.columns[0])
+    if black_and_white:
+        fig.update_layout(scene=dict(
+                bgcolor='#fff',
+                xaxis=dict(gridcolor='#000', backgroundcolor='#fff', color='#000'),
+                yaxis=dict(gridcolor='#000', backgroundcolor='#fff', color='#000'),
+                zaxis=dict(gridcolor='#000', backgroundcolor='#fff', color='#000'),
+            )       
+        )
+        fig.update_traces(marker=dict(color='#000'))
+    return fig
 
 
 def compute_histogram_bins(data, desired_bin_size):
@@ -103,10 +145,17 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
     return graph
 
 
+def generate_bar_chart(df, feature_name):
+    fig = px.bar(df, y=feature_name, x=df.columns[0], text=feature_name)
+    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+    return fig
+
 def generate_correlations_heatmaps_images(df):
-    fig, axs = plt.subplots(2, 1, figsize=(15, 15))
+    fig, axs = plt.subplots(2, 1, figsize=(25, 25))
     df = df.drop([df.columns[0], 'RC'], axis=1)
     Pearsons_heatmap = df.corr(method='pearson')
+
     spearmans_heatmap = df.corr(method='spearman')
     plot = sns.heatmap(Pearsons_heatmap, annot=True, square=True, ax=axs[0])
     axs[0].set_title("Pearson's Correlation Heatmap")
