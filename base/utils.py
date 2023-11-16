@@ -12,6 +12,8 @@ from sklearn.preprocessing import StandardScaler
 from bioinfokit.visuz import cluster
 
 
+plt.switch_backend('agg')
+
 def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, RDI, SNPI):
     return pd.DataFrame({        
                     'Genotype Code': genotype_code,
@@ -142,6 +144,7 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
     graph = base64.b64encode(image_png)
     graph = graph.decode('utf-8')
     buffer.close()
+    plt.close(fig)
     return graph
 
 
@@ -168,6 +171,7 @@ def generate_correlations_heatmaps_images(df):
     graph = base64.b64encode(image_png)
     graph = graph.decode('utf-8')
     buffer.close()
+    plt.close(fig)
     return graph
 
 
@@ -220,6 +224,7 @@ def generate_pca_plot_image(df):
     graph = base64.b64encode(image_png)
     graph = graph.decode('utf-8')
     buffer.close()
+    plt.close(fig)
     return graph
 
 
