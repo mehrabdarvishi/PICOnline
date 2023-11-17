@@ -5,8 +5,6 @@ import pandas as pd
 from .utils import *
 
 
-def index(request):
-	return HttpResponse('<h1>index page</h1>')
 
 class IndexView(View):
 	def get(self, *args, **kwargs):
@@ -64,7 +62,8 @@ class IndexView(View):
 
 		correlations_heatmaps = generate_correlations_heatmaps_images(indices_df)
 		pca = generate_pca_plot_image(indices_df)
-		bar_charts = [generate_bar_chart(indices_df, feature_name).to_html() for feature_name in feature_names]
+		#bar_charts = [generate_bar_chart(indices_df, feature_name).to_html() for feature_name in feature_names]
+		bar_charts = zip(feature_names, [generate_bar_chart_2(indices_df, feature_name) for feature_name in feature_names])
 		frequencies = [generate_relative_frequency_bar_graph_image(indices_df, feature_name) for feature_name in feature_names]
 		frequencies = zip(feature_names, frequencies)
 		describe = indices_df.describe()

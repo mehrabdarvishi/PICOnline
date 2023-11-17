@@ -28,14 +28,14 @@
 }
 
 
-.results-container .result .correlation-plots img, .results-container .result .frequencies img, .results-container .result .pca img{
+.results-container .result .correlation-plots img, .results-container .result .frequencies img, .results-container .result .pca img, .results-container .result .correlation-plots img, .results-container .result .bar-charts img{
 	margin-inline: auto;
 	margin-block: 2rem;
 	border-radius: 5px;
 }
 
 
-.results-container .result .frequencies .select-feature select {
+.results-container .result .frequencies .select-feature select, .results-container .result .bar-charts .select-feature select {
 	display: block;
 	text-align: center;
 	margin: 0 auto;
@@ -52,7 +52,7 @@
 	}
 }
 
-.results-container .result .frequencies .select-feature select:focus {
+.results-container .result .frequencies .select-feature select:focus, .results-container .result .bar-charts .select-feature select:focus {
 	outline: none;
 }
 

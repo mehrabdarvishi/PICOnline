@@ -11,7 +11,9 @@
 	<script src="{% static '/scripts/results_bar.js' %}"></script>
 	<script src="{% static '/scripts/tables.js' %}"></script>
 	<script src="{% static '/scripts/frequencies.js' %}"></script>
+	<script src="{% static '/scripts/bar_charts.js' %}"></script>
 	<script src="{% static '/scripts/three_d_plot_switch_to_black_and_white_mode.js' %}"></script>
+	<script src="{% static '/scripts/plotly-latest.min.js' %}"></script>
 
 {% endblock script %}
 {% block content %}
@@ -46,10 +48,43 @@
 			</div>
 		</div>
 		<div class="bar-charts" style="display: none; margin-inline: auto;">
-			{% for bar_chart in bar_charts %}
-				{{ bar_chart|safe }}
+			<div class="select-feature">
+				<select>
+					<option value="Yp">Yp</option>
+					<option value="Ys">Ys</option>
+					<option value="TOLL">TOLL</option>
+					<option value="MP">MP</option>
+					<option value="GMP">GMP</option>
+					<option value="HM">HM</option>
+					<option value="SSI">SSI</option>
+					<option value="STI">STI</option>
+					<option value="YI">YI</option>
+					<option value="YSI">YSI</option>
+					<option value="RSI">RSI</option>
+					<option value="SI">SI</option>
+					<option value="ATI">ATI</option>
+					<option value="SSPI">SSPI</option>
+					<option value="REI">REI</option>
+					<option value="K1STI">K1STI</option>
+					<option value="K2STI">K2STI</option>
+					<option value="SDI">SDI</option>
+					<option value="DI">DI</option>
+					<option value="RDI">RDI</option>
+					<option value="SNPI">SNPI</option>
+					<option value="CSI">CSI</option>
+  				</select>
+			</div>
+			{% for feature_name, bar_chart in bar_charts %}
+    			{% if forloop.first %}
+    				<img src="data:image/png;base64, {{ bar_chart|safe }}" alt="{{ feature_name }}">
+    			{% else %}
+    				<img src="data:image/png;base64, {{ bar_chart|safe }}" alt="{{ feature_name }}" style="display: none;">
+    			{% endif %}
 			{% endfor %}
 		</div>
+
+
+		
 		<div class="frequencies" style="display: none;">
 			<div class="select-feature">
 				<select>

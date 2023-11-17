@@ -154,6 +154,29 @@ def generate_bar_chart(df, feature_name):
     fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
     return fig
 
+
+
+
+
+def generate_bar_chart_2(df, feature_name):
+    fig = plt.figure(figsize = (20, 10))
+    plt.bar(df.iloc[:, 0], df[feature_name], color ='#24f3b9', align='center')
+    plt.xlabel(feature_name, fontsize=25, labelpad=15)
+    plt.ylabel('value', fontsize=25, labelpad=15)
+    #plt.title(f'Bar chart', fontsize=32)
+    plt.xticks(rotation=90)
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    graph = base64.b64encode(image_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    plt.close(fig)
+    return graph
+
+
+
 def generate_correlations_heatmaps_images(df):
     fig, axs = plt.subplots(2, 1, figsize=(25, 25))
     df = df.drop([df.columns[0], 'RC'], axis=1)
