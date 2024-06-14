@@ -1,3 +1,7 @@
+.results-container .result .tables .indices-table-download-icon, .results-container .result .tables .ranks-table-download-icon, .results-container .result .describe .describe-table-download-icon{
+  cursor: pointer;
+}
+
 .results-container .result .tables .dataframe-container,  .results-container .result .describe .dataframe-container{
   overflow-x: scroll;
   margin: 0 auto;
@@ -12,7 +16,7 @@
   gap: 3rem;
   margin-bottom: 4rem;
 
-  & span {
+  & .toggle-button {
     font-size: 1.2rem;
     background-color: #f1f1f1;
     padding-inline: 2rem;
@@ -21,7 +25,7 @@
     cursor: pointer;
   }
 
-  & span:hover, .selected {
+  & .toggle-button:hover, .selected {
     background-color: #365263;
     color: #f1f1f1;
   }
@@ -45,6 +49,7 @@
 .results-container .result .tables .dataframe-container .dataframe th, .results-container .result .describe .dataframe-container .dataframe th {
   padding: 1em;
   font-weight: 700;
+  text-align: center;
 }
 
 .results-container .result .tables .dataframe-container .dataframe td, .results-container .result .describe .dataframe-container .dataframe td {

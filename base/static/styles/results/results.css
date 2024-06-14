@@ -1,5 +1,6 @@
 
 .results-container {
+	margin-top: 3rem;
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
@@ -8,10 +9,10 @@
 
 .results-container .results-bar ul {
 	list-style: none;
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 	gap: 2px;
-
 }
 
 .results-container .results-bar ul li {
@@ -20,6 +21,7 @@
 	text-align: center;
 	cursor: pointer;
 	background-color: #bdd0db;
+	width: 20%;
 }
 
 .results-container .results-bar ul li:hover, .results-container .results-bar ul .selected {

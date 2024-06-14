@@ -2,25 +2,23 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly
 import plotly.express as px
 import math
 import base64
 from io import BytesIO
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from bioinfokit.visuz import cluster
-
+from itertools import combinations
+from itertools import permutations
 
 plt.switch_backend('agg')
 
-def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, RDI, SNPI):
+def get_indices_df(genotype_code, Yp, Ys, TOL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, SNPI):
     return pd.DataFrame({        
                     'Genotype Code': genotype_code,
                     'Yp':Yp,
                     'Ys':Ys,
-                    'RC':RC,
-                    'TOLL':TOLL,
+                    'TOL':TOL,
                     'MP':MP,
                     'GMP':GMP,
                     'HM':HM,
@@ -37,14 +35,13 @@ def get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, Y
                     'K2STI':K2STI,
                     'SDI':SDI,
                     'DI':DI,
-                    'RDI':RDI,
                     'SNPI':SNPI,
             })
 
-def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, RDI, SNPI, CSI):
+def get_ranks_df(genotype_code, Yp, Ys, TOL, MP, GMP, HM, SSI, STI, YI, YSI, RSI, SI, ATI, SSPI, REI, K1STI, K2STI, SDI, DI, SNPI, CSI):
     Yp_ranks = Yp.rank(ascending=False, method='min').astype(int)
     Ys_ranks = Ys.rank(ascending=False, method='min').astype(int)
-    TOLL_ranks = TOLL.rank(ascending=True, method='min').astype(int)
+    TOL_ranks = TOL.rank(ascending=True, method='min').astype(int)
     MP_ranks = MP.rank(ascending=False, method='min').astype(int)
     GMP_ranks = GMP.rank(ascending=False, method='min').astype(int)
     HM_ranks = HM.rank(ascending=False, method='min').astype(int)
@@ -61,7 +58,6 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
     K2STI_ranks = K2STI.rank(ascending=False, method='min').astype(int)
     SDI_ranks = SDI.rank(ascending=False, method='min').astype(int)
     DI_ranks = DI.rank(ascending=False, method='min').astype(int)
-    RDI_ranks = RDI.rank(ascending=False, method='min').astype(int)
     SNPI_ranks = SNPI.rank(ascending=False, method='min').astype(int)
     CSI_ranks = CSI.rank(ascending=False, method='min').astype(int)
 
@@ -69,7 +65,7 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
                             'Genotype Code': genotype_code,
                             'Yp':Yp_ranks,
                             'Ys':Ys_ranks,
-                            'TOLL':TOLL_ranks,
+                            'TOL':TOL_ranks,
                             'MP':MP_ranks,
                             'GMP':GMP_ranks,
                             'HM':HM_ranks,
@@ -86,7 +82,6 @@ def get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RS
                             'K2STI':K2STI_ranks,
                             'SDI':SDI_ranks,
                             'DI':DI_ranks,
-                            'RDI':RDI_ranks,
                             'SNPI':SNPI_ranks,
                             'CSI':CSI_ranks,
                         })
@@ -136,7 +131,12 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
     plt.xlabel(feature_name)
     plt.ylabel('Relative Frequency')
     bins = compute_histogram_bins(data=df[feature_name], desired_bin_size=bin_size)
-    ax.hist(df[feature_name], edgecolor='black', weights=np.ones_like(df[feature_name]) / number_of_rows, bins=7)
+    x = df[feature_name]
+    weights = np.ones_like(df[feature_name]) / number_of_rows
+    print(x)
+    print('*'*100)
+    print(weights)
+    ax.hist(x, weights=weights, bins=7, edgecolor='black',)
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
@@ -151,42 +151,18 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
 def generate_bar_chart(df, feature_name):
     fig = px.bar(df, y=feature_name, x=df.columns[0], text=feature_name)
     fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', template='xgridoff')
+    fig.update_layout(autosize=True)
     return fig
 
 
 
-
-
-def generate_bar_chart_2(df, feature_name):
-    fig = plt.figure(figsize = (20, 10))
-    plt.bar(df.iloc[:, 0], df[feature_name], color ='#24f3b9', align='center')
-    plt.xlabel(feature_name, fontsize=25, labelpad=15)
-    plt.ylabel('value', fontsize=25, labelpad=15)
-    #plt.title(f'Bar chart', fontsize=32)
-    plt.xticks(rotation=90)
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    graph = base64.b64encode(image_png)
-    graph = graph.decode('utf-8')
-    buffer.close()
-    plt.close(fig)
-    return graph
-
-
-
-def generate_correlations_heatmaps_images(df):
-    fig, axs = plt.subplots(2, 1, figsize=(25, 25))
-    df = df.drop([df.columns[0], 'RC'], axis=1)
-    Pearsons_heatmap = df.corr(method='pearson')
-
-    spearmans_heatmap = df.corr(method='spearman')
-    plot = sns.heatmap(Pearsons_heatmap, annot=True, square=True, ax=axs[0])
-    axs[0].set_title("Pearson's Correlation Heatmap")
-    plot = sns.heatmap(spearmans_heatmap, annot=True, square=True, ax=axs[1])
-    axs[1].set_title("Spearman's Correlation Heatmap")
+def generate_correlations_heatmap_image(df, method):
+    fig, ax = plt.subplots(figsize=(15, 15))
+    df = df.drop([df.columns[0]], axis=1)
+    heatmap = df.corr(method=method)
+    plot = sns.heatmap(heatmap, annot=True, square=True, ax=ax)
+    ax.set_title(f"{method.capitalize()}'s Correlation Heatmap")
     buffer = BytesIO()
     plot.get_figure().savefig(buffer, bbox_inches='tight', format='png')
     buffer.seek(0)
@@ -198,58 +174,52 @@ def generate_correlations_heatmaps_images(df):
     return graph
 
 
-'''
-def generate_pca_plot_image(df):
-    X = df.select_dtypes(include=np.number)
-    X_st =  StandardScaler().fit_transform(X)
-    pca_out = PCA().fit(X_st)
-    loadings = pca_out.components_
-    pca_out.explained_variance_
-    pca_scores = PCA().fit_transform(X_st)
-    c = cluster.biplot(cscore=pca_scores, loadings=loadings, labels=X.columns.values, var1=round(pca_out.explained_variance_ratio_[0]*100, 2),
-        var2=round(pca_out.explained_variance_ratio_[1]*100, 2))
-    print(help(cluster))
-'''
-
-
-def generate_pca_plot_image(df):
-    X = df.select_dtypes(include=np.number)
-    labels = X.columns.values
+def generate_pca_data(df):
+    genotype_code = df.iloc[:, 0]
+    df = df.iloc[:, 1:]
     scaler = StandardScaler()
-    scaler.fit(X)
-    X=scaler.transform(X)    
-    pca = PCA()
-    x_new = pca.fit_transform(X)
-    # Use only the 2 PCs.
-    score = x_new[:,0:2]
-    coeff = np.transpose(pca.components_[0:2, :])
-    xs = score[:,0]
-    ys = score[:,1]
-    n = coeff.shape[0]
-    scalex = 1.0/(xs.max() - xs.min())
-    scaley = 1.0/(ys.max() - ys.min())
-    fig = plt.figure()
-    plt.scatter(xs * scalex,ys * scaley)
-    for i in range(n):
-        plt.arrow(0, 0, coeff[i,0], coeff[i,1],color = 'r',alpha = 0.5)
-        if labels is None:
-            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, "Var"+str(i+1), color = 'g', ha = 'center', va = 'center')
-        else:
-            plt.text(coeff[i,0]* 1.15, coeff[i,1] * 1.15, labels[i], color = 'g', ha = 'center', va = 'center')
-    plt.xlim(-1,1)
-    plt.ylim(-1,1)
-    plt.xlabel("PC{}".format(1))
-    plt.ylabel("PC{}".format(2))
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    graph = base64.b64encode(image_png)
-    graph = graph.decode('utf-8')
-    buffer.close()
-    plt.close(fig)
-    return graph
-
+    X = scaler.fit_transform(df)
+    df = pd.DataFrame(X, columns=list(df.columns.values))
+    pca = PCA(0.999)
+    components = pca.fit_transform(df)
+    number_of_pcs = components.shape[1]
+    pca_df = pd.DataFrame(components, columns=[f'PC{i+1}' for i in range(number_of_pcs)])
+    pc_permutations = list(permutations(pca_df, 2))
+    pc_permutations += [(pc, pc) for pc in pca_df.columns]
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+    figures = []
+    for pc1, pc2 in pc_permutations:
+        pc1_number, pc2_number = int(pc1[2:])-1, int(pc2[2:])-1
+        explained_variance = [pca.explained_variance_[pc1_number], pca.explained_variance_[pc2_number]]
+        loadings = pca.components_[[pc1_number, pc2_number]].T * np.sqrt(explained_variance)
+        fig = px.scatter(pca_df, x=pc1, y=pc2, hover_name=genotype_code, template='simple_white')
+        # title=f'{pc1} vs {pc2}',
+        for i, feature in enumerate(df.columns.values):
+            fig.add_annotation(
+                ax=0, ay=0,
+                axref="x", ayref="y",
+                x=loadings[i, 0],
+                y=loadings[i, 1],
+                showarrow=True,
+                arrowsize=2,
+                arrowhead=2,
+                xanchor="right",
+                yanchor="top"
+            )
+            fig.add_annotation(
+                x=loadings[i, 0],
+                y=loadings[i, 1],
+                ax=0, ay=0,
+                xanchor="center",
+                yanchor="bottom",
+                text=feature,
+                yshift=5,
+            )
+        figures.append(fig.to_html(full_html=False, div_id=f'{pc1}-{pc2}', include_plotlyjs=False, include_mathjax=False))
+    return {
+        'figures': figures,
+        'number_of_pcs': number_of_pcs
+    }
 
 
 
@@ -258,8 +228,7 @@ if __name__ == '__main__':
     genotype_code = df[df.columns[0]]
     Yp, Ys = df.Yp, df.Ys
     Yp_mean, Ys_mean = Yp.mean(), Ys.mean()
-    RC = (Yp - Ys) / Yp * 100
-    TOLL = Yp - Ys
+    TOL = Yp - Ys
     MP = (Yp + Ys) / 2
     GMP = np.sqrt(Ys * Yp)
     HM = 2 * Ys * Yp / (Ys + Yp)
@@ -268,8 +237,5 @@ if __name__ == '__main__':
     YI = Ys / Ys_mean
     YSI = Ys / Yp
     RSI = (Ys / Yp) / (Ys_mean / Yp_mean)
-    indices_df = get_indices_df(genotype_code, Yp, Ys, RC, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
-    ranks_df = get_ranks_df(genotype_code, Yp, Ys, TOLL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
-
-
-
+    indices_df = get_indices_df(genotype_code, Yp, Ys, TOL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
+    ranks_df = get_ranks_df(genotype_code, Yp, Ys, TOL, MP, GMP, HM, SSI, STI, YI, YSI, RSI)
