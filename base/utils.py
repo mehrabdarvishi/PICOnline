@@ -131,12 +131,7 @@ def generate_relative_frequency_bar_graph_image(df, feature_name):
     plt.xlabel(feature_name)
     plt.ylabel('Relative Frequency')
     bins = compute_histogram_bins(data=df[feature_name], desired_bin_size=bin_size)
-    x = df[feature_name]
-    weights = np.ones_like(df[feature_name]) / number_of_rows
-    print(x)
-    print('*'*100)
-    print(weights)
-    ax.hist(x, weights=weights, bins=7, edgecolor='black',)
+    ax.hist(df[feature_name], edgecolor='black', weights=np.ones_like(df[feature_name]) / number_of_rows, bins=7)
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
@@ -173,6 +168,16 @@ def generate_correlations_heatmap_image(df, method):
     plt.close(fig)
     return graph
 
+
+def generate_correlations_heatmap(df, method):
+    df = df.drop([df.columns[0]], axis=1)
+    heatmap = df.corr(method=method)
+    fig = px.imshow(heatmap, text_auto=True, color_continuous_scale='earth')
+    fig.update_layout(
+    title=f"{method.capitalize()}'s Correlation Heatmap",
+    title_x=0.5
+    )
+    return fig
 
 def generate_pca_data(df):
     genotype_code = df.iloc[:, 0]

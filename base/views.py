@@ -61,8 +61,10 @@ class IndexView(View):
 
 		feature_names = ['Yp', 'Ys', 'TOL', 'MP', 'GMP', 'HM', 'SSI', 'STI', 'YI', 'YSI', 'RSI', 'SI', 'ATI', 'SSPI', 'REI', 'K1STI', 'K2STI', 'SDI', 'DI', 'SNPI', 'CSI']
 
-		pearson_heatmap = generate_correlations_heatmap_image(indices_df, method='pearson')
-		spearman_heatmap = generate_correlations_heatmap_image(indices_df, method='spearman')
+		#pearson_heatmap = generate_correlations_heatmap_image(indices_df, method='pearson')
+		#spearman_heatmap = generate_correlations_heatmap_image(indices_df, method='spearman')
+		pearson_heatmap = generate_correlations_heatmap(indices_df, method='pearson').to_html(full_html=False)
+		spearman_heatmap = generate_correlations_heatmap(indices_df, method='spearman').to_html(full_html=False)
 		pca_data = generate_pca_data(indices_df)
 		pca_plots = pca_data['figures']
 		number_of_pcs = pca_data['number_of_pcs']
@@ -87,6 +89,9 @@ class IndexView(View):
 			'rsp': rsp,
 		}
 		return render(self.request, 'base/results.html', context=context)
+
+
+
 
 class MenuView(View):
 	def get(self, *args, **kwargs):

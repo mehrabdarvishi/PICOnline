@@ -149,8 +149,12 @@
 		</div>
 		<div class="correlation-plots" style="display: none;">
 			<div>
+				{{ pearson_heatmap|safe }}
+				{{ spearman_heatmap|safe }}
+				<!--
 				<img src="data:image/png;base64, {{ pearson_heatmap|safe }}" alt="">
 				<img src="data:image/png;base64, {{ spearman_heatmap|safe }}" alt="">	
+				-->
 			</div>
 		</div>
 		<div class="three-d-plot" style="display: none; margin-inline: auto;">
